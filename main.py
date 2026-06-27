@@ -31,8 +31,11 @@ class FuzzyFinderExtension(Extension):
 
     def __init__(self) -> None:
         super().__init__()
-        self.fzf_cmd = None
-        self.fd_cmd = None
+        self.fzf_cmd = get_executable("fzf")
+        self.fd_cmd = get_executable("fd")
+        if self.fd_cmd is None:
+            self.fd_cmd = get_executable("fdfind")
+        self.typed_preferences = get_preferences(self.preferences)
 
         self.subscribe(PreferencesEvent, PreferencesEventListener())
         self.subscribe(PreferencesUpdateEvent, PreferencesUpdateEventListener())
